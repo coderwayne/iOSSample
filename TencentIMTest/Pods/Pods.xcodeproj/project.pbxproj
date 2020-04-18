@@ -1,0 +1,481 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		37C8B4CA3E62FB44CD14CEEF054EDAC2 /* TXIMSDK_iOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 2EA7CD85B583385538824685F1F8DC1A /* Build configuration list for PBXAggregateTarget "TXIMSDK_iOS" */;
+			buildPhases = (
+			);
+			dependencies = (
+			);
+			name = TXIMSDK_iOS;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		21E79CA5FC107F2FD9492BD83A074429 /* Pods-TencentIMTest-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B1234373BF9EBA1300E1561EA3588CA /* Pods-TencentIMTest-dummy.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C0BA96FD3EEACCBD9BAFC61B909BC9FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 37C8B4CA3E62FB44CD14CEEF054EDAC2;
+			remoteInfo = TXIMSDK_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0678E894EC15956398BEABE85A5413FF /* TIMCallback.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMCallback.h; path = ImSDK.framework/Headers/TIMCallback.h; sourceTree = "<group>"; };
+		2CD06D257EB980F17E32316E9523D772 /* TIMGroupManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMGroupManager.h; path = ImSDK.framework/Headers/TIMGroupManager.h; sourceTree = "<group>"; };
+		2DA4BBE89C9EDB99C7FAB7983C836AFA /* TIMManager+MsgExt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "TIMManager+MsgExt.h"; path = "ImSDK.framework/Headers/TIMManager+MsgExt.h"; sourceTree = "<group>"; };
+		33272118B355991203CB5026594F8225 /* TIMConversation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMConversation.h; path = ImSDK.framework/Headers/TIMConversation.h; sourceTree = "<group>"; };
+		3C1C78B243994242A28558288149EB2A /* ImSDK.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ImSDK.h; path = ImSDK.framework/Headers/ImSDK.h; sourceTree = "<group>"; };
+		4CD6ECB3EE554B394F33E875BB42FA01 /* TIMErrorCode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMErrorCode.h; path = ImSDK.framework/Headers/TIMErrorCode.h; sourceTree = "<group>"; };
+		544576E03E8A585A4B203FAB83A6BDAF /* Pods-TencentIMTest-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TencentIMTest-frameworks.sh"; sourceTree = "<group>"; };
+		5B1234373BF9EBA1300E1561EA3588CA /* Pods-TencentIMTest-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TencentIMTest-dummy.m"; sourceTree = "<group>"; };
+		5D63B83EC9B4ADB9539A80B068BE8D0A /* ImSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ImSDK.framework; sourceTree = "<group>"; };
+		627015ACB8A04844DD658F2130133635 /* TIMManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMManager.h; path = ImSDK.framework/Headers/TIMManager.h; sourceTree = "<group>"; };
+		694FCDAAFA501F7F61ED66965787E87D /* TIMComm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMComm.h; path = ImSDK.framework/Headers/TIMComm.h; sourceTree = "<group>"; };
+		6D6E55003E8F8FA07EF44E76EB45573A /* TXIMSDK_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TXIMSDK_iOS.debug.xcconfig; sourceTree = "<group>"; };
+		7981CFA01D7E7A8CA8B2E4BB9034B648 /* Pods-TencentIMTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TencentIMTest.release.xcconfig"; sourceTree = "<group>"; };
+		825FBA93E2A6ED0D5524FFACA798AD5D /* libPods-TencentIMTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-TencentIMTest.a"; path = "libPods-TencentIMTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		861B7C09753429B7B171E84D517186BC /* Pods-TencentIMTest-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TencentIMTest-acknowledgements.plist"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B16AB51DD6190999203E572D25EE6FE1 /* Pods-TencentIMTest-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TencentIMTest-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BAE8CC52B625F638A2D9C6BC1432ABCC /* Pods-TencentIMTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TencentIMTest.debug.xcconfig"; sourceTree = "<group>"; };
+		BBE5CC22A5A390657BD465ADBD22E2D6 /* TIMConversation+MsgExt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "TIMConversation+MsgExt.h"; path = "ImSDK.framework/Headers/TIMConversation+MsgExt.h"; sourceTree = "<group>"; };
+		D34B314BC2C98A5A2BA9EF061BBB700E /* TIMMessage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMMessage.h; path = ImSDK.framework/Headers/TIMMessage.h; sourceTree = "<group>"; };
+		D42D87508374394718494E8CB211EBF8 /* TIMFriendshipManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMFriendshipManager.h; path = ImSDK.framework/Headers/TIMFriendshipManager.h; sourceTree = "<group>"; };
+		EBA6EF33773F4277E561AEA4DC481B8F /* TIMFriendshipDefine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TIMFriendshipDefine.h; path = ImSDK.framework/Headers/TIMFriendshipDefine.h; sourceTree = "<group>"; };
+		ED794A6EAE0D5DC703F9E66544F016E2 /* TXIMSDK_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TXIMSDK_iOS.release.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		45EDC26CE76FFD630EA78AF21893C62F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		17592EA2CF9DB9A6D5809099C5189F89 /* Pods-TencentIMTest */ = {
+			isa = PBXGroup;
+			children = (
+				B16AB51DD6190999203E572D25EE6FE1 /* Pods-TencentIMTest-acknowledgements.markdown */,
+				861B7C09753429B7B171E84D517186BC /* Pods-TencentIMTest-acknowledgements.plist */,
+				5B1234373BF9EBA1300E1561EA3588CA /* Pods-TencentIMTest-dummy.m */,
+				544576E03E8A585A4B203FAB83A6BDAF /* Pods-TencentIMTest-frameworks.sh */,
+				BAE8CC52B625F638A2D9C6BC1432ABCC /* Pods-TencentIMTest.debug.xcconfig */,
+				7981CFA01D7E7A8CA8B2E4BB9034B648 /* Pods-TencentIMTest.release.xcconfig */,
+			);
+			name = "Pods-TencentIMTest";
+			path = "Target Support Files/Pods-TencentIMTest";
+			sourceTree = "<group>";
+		};
+		17FD85FAF2043E38CEED62A481D646C8 /* TXIMSDK_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3C1C78B243994242A28558288149EB2A /* ImSDK.h */,
+				0678E894EC15956398BEABE85A5413FF /* TIMCallback.h */,
+				694FCDAAFA501F7F61ED66965787E87D /* TIMComm.h */,
+				33272118B355991203CB5026594F8225 /* TIMConversation.h */,
+				BBE5CC22A5A390657BD465ADBD22E2D6 /* TIMConversation+MsgExt.h */,
+				4CD6ECB3EE554B394F33E875BB42FA01 /* TIMErrorCode.h */,
+				EBA6EF33773F4277E561AEA4DC481B8F /* TIMFriendshipDefine.h */,
+				D42D87508374394718494E8CB211EBF8 /* TIMFriendshipManager.h */,
+				2CD06D257EB980F17E32316E9523D772 /* TIMGroupManager.h */,
+				627015ACB8A04844DD658F2130133635 /* TIMManager.h */,
+				2DA4BBE89C9EDB99C7FAB7983C836AFA /* TIMManager+MsgExt.h */,
+				D34B314BC2C98A5A2BA9EF061BBB700E /* TIMMessage.h */,
+				8E22334653D8F7330BF06148CB7FF156 /* Frameworks */,
+				2C9F73546C86A6C1993CCCE141F9517B /* Support Files */,
+			);
+			name = TXIMSDK_iOS;
+			path = TXIMSDK_iOS;
+			sourceTree = "<group>";
+		};
+		2C9F73546C86A6C1993CCCE141F9517B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6D6E55003E8F8FA07EF44E76EB45573A /* TXIMSDK_iOS.debug.xcconfig */,
+				ED794A6EAE0D5DC703F9E66544F016E2 /* TXIMSDK_iOS.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/TXIMSDK_iOS";
+			sourceTree = "<group>";
+		};
+		4B6B87532550C13677B99D72E4947B4E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				17FD85FAF2043E38CEED62A481D646C8 /* TXIMSDK_iOS */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8E22334653D8F7330BF06148CB7FF156 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5D63B83EC9B4ADB9539A80B068BE8D0A /* ImSDK.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1F7E2528916B02CB1788FFFFFF6B177 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				825FBA93E2A6ED0D5524FFACA798AD5D /* libPods-TencentIMTest.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C32EF51ACE033256FDC84E2677FEC8BA /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				17592EA2CF9DB9A6D5809099C5189F89 /* Pods-TencentIMTest */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
+				4B6B87532550C13677B99D72E4947B4E /* Pods */,
+				A1F7E2528916B02CB1788FFFFFF6B177 /* Products */,
+				C32EF51ACE033256FDC84E2677FEC8BA /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D39D51F21FAEBC921360386E038C7218 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		372C21C51EEB20CC3B204B0C9C79FD18 /* Pods-TencentIMTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B6E84AF419DA25EC711BF855AD06E16 /* Build configuration list for PBXNativeTarget "Pods-TencentIMTest" */;
+			buildPhases = (
+				D39D51F21FAEBC921360386E038C7218 /* Headers */,
+				E469A455B1605BD94625ED7280561AAF /* Sources */,
+				45EDC26CE76FFD630EA78AF21893C62F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				59D5C837743A4313414395F048ACBE93 /* PBXTargetDependency */,
+			);
+			name = "Pods-TencentIMTest";
+			productName = "Pods-TencentIMTest";
+			productReference = 825FBA93E2A6ED0D5524FFACA798AD5D /* libPods-TencentIMTest.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = A1F7E2528916B02CB1788FFFFFF6B177 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				372C21C51EEB20CC3B204B0C9C79FD18 /* Pods-TencentIMTest */,
+				37C8B4CA3E62FB44CD14CEEF054EDAC2 /* TXIMSDK_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E469A455B1605BD94625ED7280561AAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21E79CA5FC107F2FD9492BD83A074429 /* Pods-TencentIMTest-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		59D5C837743A4313414395F048ACBE93 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TXIMSDK_iOS;
+			target = 37C8B4CA3E62FB44CD14CEEF054EDAC2 /* TXIMSDK_iOS */;
+			targetProxy = C0BA96FD3EEACCBD9BAFC61B909BC9FD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		88325DC7F35F64BE46A12AAB70D16536 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7981CFA01D7E7A8CA8B2E4BB9034B648 /* Pods-TencentIMTest.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8F17DC3A99F99FBAD606CE6963886315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		916E0404255105F480DC4950B7625F7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		9E276770DC88B5C385AB3E744A6BB6D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D6E55003E8F8FA07EF44E76EB45573A /* TXIMSDK_iOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B341D5F0D7C42E99F4B0201F24231331 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAE8CC52B625F638A2D9C6BC1432ABCC /* Pods-TencentIMTest.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C176E085CA3DF899251F4B05C16AE869 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED794A6EAE0D5DC703F9E66544F016E2 /* TXIMSDK_iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2EA7CD85B583385538824685F1F8DC1A /* Build configuration list for PBXAggregateTarget "TXIMSDK_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9E276770DC88B5C385AB3E744A6BB6D3 /* Debug */,
+				C176E085CA3DF899251F4B05C16AE869 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				916E0404255105F480DC4950B7625F7A /* Debug */,
+				8F17DC3A99F99FBAD606CE6963886315 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5B6E84AF419DA25EC711BF855AD06E16 /* Build configuration list for PBXNativeTarget "Pods-TencentIMTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B341D5F0D7C42E99F4B0201F24231331 /* Debug */,
+				88325DC7F35F64BE46A12AAB70D16536 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}
