@@ -10,13 +10,13 @@
 		68FC3157E9A5673C3A9EF489 /* libPods-TencentIMTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1E9F65C02FA4EA69B44223 /* libPods-TencentIMTest.a */; };
 		6C41F3542446B8AD0005EDC2 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C41F3522446B8AC0005EDC2 /* Common.m */; };
 		6C6DA7D72447FBFF0006B59D /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DA7D62447FBFF0006B59D /* SceneDelegate.m */; };
+		6C8BB931244D7A160007C823 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8BB930244D7A160007C823 /* GenerateTestUserSig.m */; };
 		6C9E9A6124445B0100C28C0F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E9A6024445B0100C28C0F /* AppDelegate.m */; };
 		6C9E9A6724445B0100C28C0F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E9A6624445B0100C28C0F /* ViewController.m */; };
 		6C9E9A6A24445B0100C28C0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C9E9A6824445B0100C28C0F /* Main.storyboard */; };
 		6C9E9A6C24445B0300C28C0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C9E9A6B24445B0300C28C0F /* Assets.xcassets */; };
 		6C9E9A6F24445B0300C28C0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C9E9A6D24445B0300C28C0F /* LaunchScreen.storyboard */; };
 		6C9E9A7224445B0300C28C0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9E9A7124445B0300C28C0F /* main.m */; };
-		6CA08AAF2445651400E78B09 /* GenerateTestUserSig.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CA08AAE2445651400E78B09 /* GenerateTestUserSig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +25,8 @@
 		6C41F3532446B8AC0005EDC2 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		6C6DA7D52447FBFF0006B59D /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		6C6DA7D62447FBFF0006B59D /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		6C8BB92F244D7A160007C823 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateTestUserSig.h; sourceTree = "<group>"; };
+		6C8BB930244D7A160007C823 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateTestUserSig.m; sourceTree = "<group>"; };
 		6C9E9A5C24445B0100C28C0F /* TencentIMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TencentIMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9E9A5F24445B0100C28C0F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6C9E9A6024445B0100C28C0F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -35,8 +37,6 @@
 		6C9E9A6E24445B0300C28C0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6C9E9A7024445B0300C28C0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C9E9A7124445B0300C28C0F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6CA08AAD2445651400E78B09 /* GenerateTestUserSig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GenerateTestUserSig.h; path = TIMSDK/iOS/TUIKitDemo/TUIKitDemo/Debug/GenerateTestUserSig.h; sourceTree = SOURCE_ROOT; };
-		6CA08AAE2445651400E78B09 /* GenerateTestUserSig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GenerateTestUserSig.m; path = TIMSDK/iOS/TUIKitDemo/TUIKitDemo/Debug/GenerateTestUserSig.m; sourceTree = SOURCE_ROOT; };
 		71EA0B6FEB00E5E4C07B2DDF /* Pods-TencentIMTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TencentIMTest.debug.xcconfig"; path = "Target Support Files/Pods-TencentIMTest/Pods-TencentIMTest.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1E9F65C02FA4EA69B44223 /* libPods-TencentIMTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TencentIMTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -82,10 +82,10 @@
 		6C9E9A5E24445B0100C28C0F /* TencentIMTest */ = {
 			isa = PBXGroup;
 			children = (
+				6C8BB92F244D7A160007C823 /* GenerateTestUserSig.h */,
+				6C8BB930244D7A160007C823 /* GenerateTestUserSig.m */,
 				6C41F3532446B8AC0005EDC2 /* Common.h */,
 				6C41F3522446B8AC0005EDC2 /* Common.m */,
-				6CA08AAD2445651400E78B09 /* GenerateTestUserSig.h */,
-				6CA08AAE2445651400E78B09 /* GenerateTestUserSig.m */,
 				6C9E9A5F24445B0100C28C0F /* AppDelegate.h */,
 				6C9E9A6024445B0100C28C0F /* AppDelegate.m */,
 				6C9E9A6524445B0100C28C0F /* ViewController.h */,
@@ -227,9 +227,9 @@
 				6C41F3542446B8AD0005EDC2 /* Common.m in Sources */,
 				6C6DA7D72447FBFF0006B59D /* SceneDelegate.m in Sources */,
 				6C9E9A6724445B0100C28C0F /* ViewController.m in Sources */,
-				6CA08AAF2445651400E78B09 /* GenerateTestUserSig.m in Sources */,
 				6C9E9A6124445B0100C28C0F /* AppDelegate.m in Sources */,
 				6C9E9A7224445B0300C28C0F /* main.m in Sources */,
+				6C8BB931244D7A160007C823 /* GenerateTestUserSig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

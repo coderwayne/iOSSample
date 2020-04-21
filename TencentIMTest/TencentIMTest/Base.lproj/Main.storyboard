@@ -114,12 +114,130 @@
                                     <action selector="sendC2CTextMsg:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mjg-gQ-tnl"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1d5-CB-uSz">
+                                <rect key="frame" x="221" y="338" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="创建聊天室"/>
+                                <connections>
+                                    <action selector="createGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lgf-MT-caD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gio-Rd-DPQ">
+                                <rect key="frame" x="502" y="338" width="123" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="创建指定属性群组"/>
+                                <connections>
+                                    <action selector="createDIYGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eYT-Zg-5on"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7CL-qY-Usx">
+                                <rect key="frame" x="377" y="388" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="加入群聊"/>
+                                <connections>
+                                    <action selector="joinGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jRt-Lj-lx5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oSi-3n-L5V">
+                                <rect key="frame" x="319" y="338" width="161" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="自定义群组 ID 创建群组"/>
+                                <connections>
+                                    <action selector="createGroupById:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HtT-3H-qQ6"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="群ID" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YhP-Tm-4Zp">
+                                <rect key="frame" x="221" y="387" width="140" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="聊天内容" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s9f-hJ-P7M">
+                                <rect key="frame" x="461" y="384" width="439" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ma-kG-GBQ">
+                                <rect key="frame" x="910" y="386" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="发送聊天"/>
+                                <connections>
+                                    <action selector="sendGroupMsg:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ILS-0p-x0w"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qo2-aB-qj6">
+                                <rect key="frame" x="14" y="415" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="获取用户资料"/>
+                                <connections>
+                                    <action selector="getMyUserInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Am1-Cu-jXC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wa2-YW-PhX">
+                                <rect key="frame" x="221" y="449" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="离开群聊"/>
+                                <connections>
+                                    <action selector="quitGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CNk-iI-zcz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kQF-ar-r0m">
+                                <rect key="frame" x="312" y="449" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="删除群组成员"/>
+                                <connections>
+                                    <action selector="deleteGroupUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wVh-F5-PSY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BgV-qp-rQh">
+                                <rect key="frame" x="221" y="498" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="获取成员列表"/>
+                                <connections>
+                                    <action selector="getGroupUserList:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dm0-n9-159"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qje-Dj-0jA">
+                                <rect key="frame" x="435" y="449" width="123" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="获取我加入的群组"/>
+                                <connections>
+                                    <action selector="getMyGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7Gh-ec-FUl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aux-kG-xZW">
+                                <rect key="frame" x="586" y="449" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="解散群组"/>
+                                <connections>
+                                    <action selector="deleteGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kcj-wW-QeI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WKq-XQ-g65">
+                                <rect key="frame" x="677" y="449" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="转让群组"/>
+                                <connections>
+                                    <action selector="modifyGroupOwner:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6CK-5H-KIe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A5J-mG-UWW">
+                                <rect key="frame" x="758" y="449" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="全员禁言"/>
+                                <connections>
+                                    <action selector="modifyGroupAllShutup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Of5-AN-VQH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="txtC2CMsg" destination="9Li-fX-f7I" id="dZh-H5-VH3"/>
+                        <outlet property="txtGroupId" destination="YhP-Tm-4Zp" id="e0F-Yv-7Pm"/>
+                        <outlet property="txtGroupMsg" destination="s9f-hJ-P7M" id="BDy-fs-AfP"/>
                         <outlet property="txtInfo" destination="tau-FF-YRv" id="zeE-kG-aNI"/>
                         <outlet property="txtSendUser" destination="Q3e-4q-xqo" id="hsH-TV-4Pb"/>
                         <outlet property="txtUserName" destination="fhn-yq-J1h" id="syo-se-8Sh"/>

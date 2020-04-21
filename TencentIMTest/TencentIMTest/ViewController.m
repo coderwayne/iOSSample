@@ -21,27 +21,249 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 @property (copy, nonatomic) NSString *userSig;
 @property (weak, nonatomic) IBOutlet UITextField *txtSendUser;
 @property (weak, nonatomic) IBOutlet UITextField *txtC2CMsg;
+@property (weak, nonatomic) IBOutlet UITextField *txtGroupId;
+@property (weak, nonatomic) IBOutlet UITextField *txtGroupMsg;
 
 @end
 
 @implementation ViewController
 
-- (IBAction)tempButtonClicked:(id)sender {
-    /**
-    *  1.3 创建聊天室
-    *
-    *  快速创建聊天室，创建者默认加入群组，无需显式指定，群组类型形态请参考官网文档 [群组形态介绍](https://cloud.tencent.com/document/product/269/1502#.E7.BE.A4.E7.BB.84.E5.BD.A2.E6.80.81.E4.BB.8B.E7.BB.8D)
-    *
-    *  @param members   群成员，NSString* 数组
-    *  @param groupName 群名
-    *  @param succ      成功回调 groupId
-    *  @param fail      失败回调
-    *
-    *  @return 0：成功；1：失败
-    */
+#pragma TIMConnListener 消息回调
+- (void)onNewMessage:(NSArray *)msgs {
+    [self appendInfoText:@"收到新消息"];
     
+    for (TIMMessage *msg in msgs) {
+        TIMElem *elem = [msg getElem:0];
+        [self appendInfoText:[NSString stringWithFormat:@"消息的类型是：%@", [elem class]]];
+        
+        if([elem isKindOfClass:[TIMTextElem class]]) {
+            TIMTextElem *textElem = (TIMTextElem *)elem;
+            [self appendInfoText:[NSString stringWithFormat:@"收到文本消息: %@", textElem.text]];
+        }
+        else if([elem isKindOfClass:[TIMGroupSystemElem class]]) {
+            TIMGroupSystemElem *groupSystemElem = (TIMGroupSystemElem *)elem;
+            [self appendInfoText:[NSString stringWithFormat:@"收到group系统消息: %@", groupSystemElem.msg]];
+        }
+        
+        else if([elem isKindOfClass:[TIMGroupTipsElem class]]) {
+            TIMGroupTipsElem *groupTipsElem = (TIMGroupTipsElem *)elem;
+            [self appendInfoText:[NSString stringWithFormat:@"收到group tips消息: %@", groupTipsElem]];
+        }
+        
+        else if([elem isKindOfClass:[TIMCustomElem class]]) {
+            TIMCustomElem *customElem = (TIMCustomElem *)elem;
+            NSData *receiveData = customElem.data;
+            NSString *jsonString = [[NSString alloc] initWithData:receiveData encoding:NSUTF8StringEncoding];
+            [self appendInfoText:[NSString stringWithFormat:@"json string is %@", jsonString]];
+        }
+        
+    }
+}
+
+// 设置全员禁言
+- (IBAction)modifyGroupAllShutup:(id)sender {
+    int returnValue = [[TIMGroupManager sharedInstance] modifyGroupAllShutup:_txtGroupId.text shutup:YES succ:^{
+        [self appendInfoText:@"设置禁言成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"设置禁言失败 code=%d err=%@", code, msg]];
+    }];
+    
+    [self appendInfoText:[NSString stringWithFormat:@"设置禁言返回值：%d", returnValue]];
+}
+
+// 转让群组
+- (IBAction)modifyGroupOwner:(id)sender {
+    [[TIMGroupManager sharedInstance] modifyGroupOwner:_txtGroupId.text user:@"wdl" succ:^{
+        [self appendInfoText:@"转让群成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"转让群失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 解散群组
+- (IBAction)deleteGroup:(id)sender {
+    [[TIMGroupManager sharedInstance] deleteGroup:_txtGroupId.text succ:^{
+        [self appendInfoText:@"解散群成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"解散群失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+- (IBAction)tempButtonClicked:(id)sender {
+    NSString *bodyString =  @"{\"name\": \"John Doe\", \"age\": 18, \"address\": {\"country\" : \"china\", \"zip-code\": \"10000\"}}";
+    NSDictionary *dic = @{@"msg_id":@"1001", @"stamp":@"200420180112", @"body":bodyString};
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:kNilOptions error:nil];
+    
+    TIMCustomElem *customElem = [[TIMCustomElem alloc] init];
+    customElem.data = jsonData;
+
+    TIMMessage *msg = [[TIMMessage alloc] init];
+    [msg addElem:customElem];
+    
+    TIMConversation *group_conversation = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:_txtGroupId.text];
+    [group_conversation sendMessage:msg succ:^{
+        [self appendInfoText:@"消息发送成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 获取我加入的群组
+- (IBAction)getMyGroup:(id)sender {
+    [[TIMGroupManager sharedInstance] getGroupList:^(NSArray *groupList) {
+        int i = 0;
+        // 列表为 TIMGroupInfo，结构体只包含 group|groupName|groupType|faceUrl|allShutup|selfInfo 信息
+        for (TIMGroupInfo *groupInfo in groupList) {
+            i++;
+            [self appendInfoText:[NSString stringWithFormat:@"加入的第%d个群组：", i]];
+            [self appendInfoText:[NSString stringWithFormat:@"群组ID：%@", groupInfo.group]];
+            [self appendInfoText:[NSString stringWithFormat:@"群名称：%@", groupInfo.groupName]];
+            [self appendInfoText:[NSString stringWithFormat:@"群类型：%@", groupInfo.groupType]];
+            [self appendInfoText:[NSString stringWithFormat:@"群头像：%@", groupInfo.faceURL]];
+            [self appendInfoText:[NSString stringWithFormat:@"是否全体禁言：%d", groupInfo.allShutup]];
+            [self appendInfoText:[NSString stringWithFormat:@"群组中的本人信息：%@", groupInfo.selfInfo]];
+        }
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取我加入的群组失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 获取成员列表
+- (IBAction)getGroupUserList:(id)sender {
+    [[TIMGroupManager sharedInstance] getGroupMembers:_txtGroupId.text succ:^(NSArray *members) {
+        NSLog(@"A");
+        int i = 0;
+        for (TIMGroupMemberInfo *memberInfo in members) {
+            i++;
+            [self appendInfoText:[NSString stringWithFormat:@"第%d个用户：", i]];
+            [self appendInfoText:[NSString stringWithFormat:@"被操作成员：%@", memberInfo.member]];
+            [self appendInfoText:[NSString stringWithFormat:@"群名片：%@", memberInfo.nameCard]];
+            [self appendInfoText:[NSString stringWithFormat:@"加入群组时间：%ld", memberInfo.joinTime]];
+            // 0 -- TIM_GROUP_MEMBER_UNDEFINED -- 未定义(没有获取该字段)
+            // 200 -- TIM_GROUP_MEMBER_ROLE_MEMBER -- 群成员
+            // 300 -- TIM_GROUP_MEMBER_ROLE_ADMIN -- 群管理员
+            // 400 -- TIM_GROUP_MEMBER_ROLE_SUPER -- 群主
+            [self appendInfoText:[NSString stringWithFormat:@"成员类型：%ld", memberInfo.role]];
+            [self appendInfoText:[NSString stringWithFormat:@"禁言时间（剩余秒数）：%u", memberInfo.silentUntil]];
+            // 自定义字段集合,key 是 NSString*类型,value 是 NSData*类型
+            [self appendInfoText:[NSString stringWithFormat:@"自定义字段集合：%@", memberInfo.customInfo]];
+        }
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取成员列表失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 获取我的用户信息
+- (IBAction)getMyUserInfo:(id)sender {
+    [[TIMFriendshipManager sharedInstance] getSelfProfile:^(TIMUserProfile *profile) {
+        NSLog(@"用户ID：%@", profile.identifier);
+        [self appendInfoText:[NSString stringWithFormat:@"用户ID：%@", profile.identifier]];
+        [self appendInfoText:[NSString stringWithFormat:@"昵称：%@", profile.nickname]];
+        [self appendInfoText:[NSString stringWithFormat:@"好友验证方式：%ld", (long)profile.allowType]];
+        [self appendInfoText:[NSString stringWithFormat:@"头像：%@", profile.faceURL]];
+        [self appendInfoText:[NSString stringWithFormat:@"签名：%@", profile.selfSignature]];
+        [self appendInfoText:[NSString stringWithFormat:@"性别：%ld", (long)profile.gender]];
+        [self appendInfoText:[NSString stringWithFormat:@"生日：%ld", (long)profile.birthday]];
+        [self appendInfoText:[NSString stringWithFormat:@"区域：%@", profile.location]];
+        [self appendInfoText:[NSString stringWithFormat:@"语言：%u", profile.language]];
+        [self appendInfoText:[NSString stringWithFormat:@"等级：%u", profile.level]];
+        [self appendInfoText:[NSString stringWithFormat:@"角色：%u", profile.role]];
+        [self appendInfoText:[NSString stringWithFormat:@"自定义字段：%@", profile.customInfo]];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取我的用户信息失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+
+// 发送群聊消息
+- (IBAction)sendGroupMsg:(id)sender {
+    TIMTextElem *textElem = [[TIMTextElem alloc] init];
+    [textElem setText:_txtGroupMsg.text];
+    
+    TIMMessage *msg = [[TIMMessage alloc] init];
+    [msg addElem:textElem];
+    
+    TIMConversation *group_conversation = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:_txtGroupId.text];
+    [group_conversation sendMessage:msg succ:^{
+        [self appendInfoText:@"消息发送成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 加入聊天室
+- (IBAction)joinGroup:(id)sender {
+    TIMManager * manager = [TIMManager sharedInstance];
+    
+    [[TIMGroupManager sharedInstance] joinGroup:_txtGroupId.text msg:manager.getLoginUser succ:^(){
+        [self appendInfoText:@"加入群聊成功"];
+    }fail:^(int code, NSString * err) {
+        [self appendInfoText:[NSString stringWithFormat:@"加入群聊失败：：%d->%@", code, err]];
+    }];
+}
+
+// 离开聊天室
+- (IBAction)quitGroup:(id)sender {
+    [[TIMGroupManager sharedInstance] quitGroup:_txtGroupId.text succ:^{
+        [self appendInfoText:@"离开群聊成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"离开群聊失败：：%d->%@", code, msg]];
+    }];
+}
+
+// 删除群组成员
+- (IBAction)deleteGroupUser:(id)sender {
+    NSMutableArray * members = [[NSMutableArray alloc] init];
+    [members addObject:@"hxw"];
+    
+    [[TIMGroupManager sharedInstance] deleteGroupMemberWithReason:_txtGroupId.text reason:@"发广告" members:members succ:^(NSArray *members) {
+        for (TIMGroupMemberResult * result in members) {
+            [self appendInfoText:[NSString stringWithFormat:@"user %@ status %ld", result.member, (long)result.status]];
+        }
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"删除群组成员失败：：%d->%@", code, msg]];
+    }];
+}
+
+// 创建聊天室
+- (IBAction)createGroup:(id)sender {
     //每次创建的聊天室groupId不一样，证明groupName只是一个标识，创建了多个叫这个名字的聊天室。
-    [[TIMGroupManager sharedInstance] createChatRoomGroup:nil groupName:@"wayne's first chatroom" succ:^(NSString *groupId) {
+    int result = [[TIMGroupManager sharedInstance] createChatRoomGroup:nil groupName:@"wayne's first chatroom" succ:^(NSString *groupId) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室成功，groupId：%@", groupId]];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室失败：：%d->%@", code, msg]];
+    }];
+    [self appendInfoText:[NSString stringWithFormat:@"创建结果：%d", result]];
+}
+
+// 自定义群组 ID 创建群组
+- (IBAction)createGroupById:(id)sender {
+    int result = [[TIMGroupManager sharedInstance] createGroup:@"ChatRoom" groupId:@"mygroup115" groupName:@"我的聊天室" succ:^(NSString *groupId) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室成功，groupId：%@", groupId]];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室失败：：%d->%@", code, msg]];
+    }];
+    [self appendInfoText:[NSString stringWithFormat:@"创建结果：%d", result]];
+}
+
+// 创建指定属性群组
+- (IBAction)createDIYGroup:(id)sender {
+    TIMCreateGroupInfo *groupInfo = [[TIMCreateGroupInfo alloc] init];
+    groupInfo.group = @"group12345"; // 群组Id,nil则使用系统默认Id
+    groupInfo.groupName = @"ofweek led在线研讨会"; // 群名
+    groupInfo.groupType = @"ChatRoom"; // 群类型：Private,Public,ChatRoom,AVChatRoom
+    groupInfo.setAddOpt = NO; // 是否设置入群选项，Private类型群组请设置为false
+    groupInfo.addOpt = TIM_GROUP_ADD_ANY; // 入群选项,TIM_GROUP_ADD_FORBID(禁止加群),TIM_GROUP_ADD_AUTH(需要管理员审批),TIM_GROUP_ADD_ANY(任何人可以加入)
+    groupInfo.maxMemberNum = 0; // 最大成员数，填 0 则系统使用默认值
+    groupInfo.notification = @"这是群公告"; // 群公告
+    groupInfo.introduction = @"这是群简介"; // 群简介
+    groupInfo.faceURL = @"https://www.ofweek.com/Upload/seminar/2020-4/202041014384346.jpg"; // 群头像
+//    groupInfo.customInfo = [[NSDictionary alloc] initWithObjects:nil forKeys:nil]; // 自定义字段集合,key 是 NSString* 类型，value 是 NSData* 类型
+//    groupInfo.membersInfo = [NSArray arrayWithObject:nil]; // 创建成员（TIMCreateGroupMemberInfo*）列表
+    
+
+    [[TIMGroupManager sharedInstance] createGroup:groupInfo succ:^(NSString *groupId) {
         [self appendInfoText:[NSString stringWithFormat:@"创建聊天室成功，groupId：%@", groupId]];
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"创建聊天室失败：：%d->%@", code, msg]];
@@ -193,48 +415,6 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
         [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
     }];
 }
-
-#pragma TIMConnListener 消息回调
-
-- (void)onNewMessage:(NSArray *)msgs {
-    [self appendInfoText:@"收到新消息"];
-    
-    for (TIMMessage *msg in msgs) {
-        TIMElem *elem = [msg getElem:0];
-        [self appendInfoText:[NSString stringWithFormat:@"消息的类型是：%@", [elem class]]];
-        
-        if([elem isKindOfClass:[TIMTextElem class]]) {
-            TIMTextElem *textElem = (TIMTextElem *)elem;
-            [self appendInfoText:[NSString stringWithFormat:@"收到文本消息: %@", textElem.text]];
-        }
-        else if([elem isKindOfClass:[TIMGroupSystemElem class]]) {
-            TIMGroupSystemElem *groupSystemElem = (TIMGroupSystemElem *)elem;
-            [self appendInfoText:[NSString stringWithFormat:@"收到group系统消息: %@", groupSystemElem]];
-        }
-        
-//        TIMElem *elem = [msg getElem:0];
-//        if ([elem isKindOfClass:[TIMCustomElem class]]) {
-//            TIMCustomElem *custom = (TIMCustomElem *)elem;
-//            NSDictionary *param = [TCUtil jsonData2Dictionary:[custom data]];
-//            if (param != nil && [param[@"version"] integerValue] == 2) {
-//                [[VideoCallManager shareInstance] onNewVideoCallMessage:msg];
-//            }
-//        }
-    }
-}
-
-///**
-// *  消息回调
-// */
-//@protocol TIMMessageListener <NSObject>
-//@optional
-///**
-// *  新消息回调通知
-// *
-// *  @param msgs 新消息列表，TIMMessage 类型数组
-// */
-//- (void)onNewMessage:(NSArray*)msgs;
-//@end
 
 #pragma TIMConnListener 网络事件
 - (void)onConnSucc {
