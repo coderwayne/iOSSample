@@ -3,7 +3,7 @@
     <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -123,9 +123,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gio-Rd-DPQ">
-                                <rect key="frame" x="502" y="338" width="123" height="30"/>
+                                <rect key="frame" x="509" y="338" width="164" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="创建指定属性群组"/>
+                                <state key="normal" title="创建指定属性群组(ANY)"/>
                                 <connections>
                                     <action selector="createDIYGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eYT-Zg-5on"/>
                                 </connections>
@@ -228,6 +228,22 @@
                                 <state key="normal" title="全员禁言"/>
                                 <connections>
                                     <action selector="modifyGroupAllShutup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Of5-AN-VQH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifp-nQ-ZXW">
+                                <rect key="frame" x="838" y="449" width="62" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="禁言某人"/>
+                                <connections>
+                                    <action selector="modifyUserShutup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wds-62-4Od"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BU4-uK-btc">
+                                <rect key="frame" x="702" y="338" width="175" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="创建指定属性群组(AUTH)"/>
+                                <connections>
+                                    <action selector="createDIYGroupAuth:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2D6-E3-WMw"/>
                                 </connections>
                             </button>
                         </subviews>

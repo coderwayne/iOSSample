@@ -42,14 +42,49 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
         }
         else if([elem isKindOfClass:[TIMGroupSystemElem class]]) {
             TIMGroupSystemElem *groupSystemElem = (TIMGroupSystemElem *)elem;
-            [self appendInfoText:[NSString stringWithFormat:@"收到group系统消息: %@", groupSystemElem.msg]];
+            [self appendInfoText:[NSString stringWithFormat:@"收到group系统消息: %ld", (long)groupSystemElem.type]];
+            
+            switch (groupSystemElem.type) {
+                case TIM_GROUP_SYSTEM_ADD_GROUP_REQUEST_TYPE:
+                    [self appendInfoText:[NSString stringWithFormat:@"有人申请加群，申请人是:%@，群组ID:%@，申请理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                    break;
+//                case TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE:
+//                    NSLog(@"group %@ deleted by %@", [system_elem group], [system_elem user]);
+//                    break;
+                default:
+                    NSLog(@"ignore type");
+                    break;
+            }
         }
-        
         else if([elem isKindOfClass:[TIMGroupTipsElem class]]) {
             TIMGroupTipsElem *groupTipsElem = (TIMGroupTipsElem *)elem;
             [self appendInfoText:[NSString stringWithFormat:@"收到group tips消息: %@", groupTipsElem]];
+            
+            switch (groupTipsElem.type) {
+                case TIM_GROUP_TIPS_TYPE_INVITE:
+                    [self appendInfoText:[NSString stringWithFormat:@"有用户进入群，该用户是:%@，群名:%@, 入群的用户列表:%@", groupTipsElem.opUser, groupTipsElem.groupName, groupTipsElem.userList]];
+                    break;
+                case TIM_GROUP_TIPS_TYPE_QUIT_GRP:
+                    [self appendInfoText:[NSString stringWithFormat:@"有用户退出群，该用户是:%@，群名:%@", groupTipsElem.opUser, groupTipsElem.groupName]];
+                    break;
+                case TIM_GROUP_TIPS_TYPE_KICKED:
+                    [self appendInfoText:[NSString stringWithFormat:@"用户被踢出群组，该用户是:%@，群名:%@", groupTipsElem.opUser, groupTipsElem.groupName]];
+                    break;
+                case TIM_GROUP_TIPS_TYPE_SET_ADMIN:
+                    [self appendInfoText:[NSString stringWithFormat:@"有用户被设置管理员，该用户是:%@，群名:%@, 被设置管理员身份的用户列表:%@", groupTipsElem.opUser, groupTipsElem.groupName, groupTipsElem.userList]];
+                    break;
+                case TIM_GROUP_TIPS_TYPE_CANCEL_ADMIN:
+                    [self appendInfoText:[NSString stringWithFormat:@"有用户被取消管理员，该用户是:%@，群名:%@, 被取消管理员身份的用户列表:%@", groupTipsElem.opUser, groupTipsElem.groupName, groupTipsElem.userList]];
+                    break;
+                case TIM_GROUP_TIPS_TYPE_INFO_CHANGE:
+                    [self appendInfoText:[NSString stringWithFormat:@"群资料变更，操作用户是:%@，群名:%@, 群变更的具体资料信息:%@", groupTipsElem.opUser, groupTipsElem.groupName, groupTipsElem.groupChangeList]];
+                    break;
+                default:
+                    NSLog(@"ignore type");
+                    break;
+            }
         }
-        
+
         else if([elem isKindOfClass:[TIMCustomElem class]]) {
             TIMCustomElem *customElem = (TIMCustomElem *)elem;
             NSData *receiveData = customElem.data;
@@ -60,9 +95,18 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }
 }
 
+// 设置某人禁言
+- (IBAction)modifyUserShutup:(id)sender {
+    [[TIMGroupManager sharedInstance] modifyGroupMemberInfoSetSilence:_txtGroupId.text user:@"hxw" stime:30 succ:^{
+        [self appendInfoText:@"设置禁言成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"设置禁言失败 code=%d err=%@", code, msg]];
+    }];
+}
+
 // 设置全员禁言
 - (IBAction)modifyGroupAllShutup:(id)sender {
-    int returnValue = [[TIMGroupManager sharedInstance] modifyGroupAllShutup:_txtGroupId.text shutup:YES succ:^{
+    int returnValue = [[TIMGroupManager sharedInstance] modifyGroupAllShutup:_txtGroupId.text shutup:NO succ:^{
         [self appendInfoText:@"设置禁言成功"];
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"设置禁言失败 code=%d err=%@", code, msg]];
@@ -239,7 +283,7 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 
 // 自定义群组 ID 创建群组
 - (IBAction)createGroupById:(id)sender {
-    int result = [[TIMGroupManager sharedInstance] createGroup:@"ChatRoom" groupId:@"mygroup115" groupName:@"我的聊天室" succ:^(NSString *groupId) {
+    int result = [[TIMGroupManager sharedInstance] createGroup:@"Public" groupId:@"group23" groupName:@"我的聊天室" succ:^(NSString *groupId) {
         [self appendInfoText:[NSString stringWithFormat:@"创建聊天室成功，groupId：%@", groupId]];
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"创建聊天室失败：：%d->%@", code, msg]];
@@ -247,13 +291,36 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     [self appendInfoText:[NSString stringWithFormat:@"创建结果：%d", result]];
 }
 
-// 创建指定属性群组
+// 创建指定属性群组(AUTH)
+- (IBAction)createDIYGroupAuth:(id)sender {
+    TIMCreateGroupInfo *groupInfo = [[TIMCreateGroupInfo alloc] init];
+    groupInfo.group = _txtGroupId.text; // 群组Id,nil则使用系统默认Id
+    groupInfo.groupName = @"ofweek led在线研讨会"; // 群名
+    groupInfo.groupType = @"Public"; // 群类型：Private,Public,ChatRoom,AVChatRoom
+    groupInfo.setAddOpt = YES; // 是否设置入群选项，Private类型群组请设置为false
+    groupInfo.addOpt = TIM_GROUP_ADD_AUTH; // 入群选项,TIM_GROUP_ADD_FORBID(禁止加群),TIM_GROUP_ADD_AUTH(需要管理员审批),TIM_GROUP_ADD_ANY(任何人可以加入)
+    groupInfo.maxMemberNum = 0; // 最大成员数，填 0 则系统使用默认值
+    groupInfo.notification = @"这是群公告"; // 群公告
+    groupInfo.introduction = @"这是群简介"; // 群简介
+    groupInfo.faceURL = @"https://www.ofweek.com/Upload/seminar/2020-4/202041014384346.jpg"; // 群头像
+//    groupInfo.customInfo = [[NSDictionary alloc] initWithObjects:nil forKeys:nil]; // 自定义字段集合,key 是 NSString* 类型，value 是 NSData* 类型
+//    groupInfo.membersInfo = [NSArray arrayWithObject:nil]; // 创建成员（TIMCreateGroupMemberInfo*）列表
+    
+
+    [[TIMGroupManager sharedInstance] createGroup:groupInfo succ:^(NSString *groupId) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室成功，groupId：%@", groupId]];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"创建聊天室失败：：%d->%@", code, msg]];
+    }];
+}
+
+// 创建指定属性群组(ANY)
 - (IBAction)createDIYGroup:(id)sender {
     TIMCreateGroupInfo *groupInfo = [[TIMCreateGroupInfo alloc] init];
-    groupInfo.group = @"group12345"; // 群组Id,nil则使用系统默认Id
+    groupInfo.group = _txtGroupId.text; // 群组Id,nil则使用系统默认Id
     groupInfo.groupName = @"ofweek led在线研讨会"; // 群名
-    groupInfo.groupType = @"ChatRoom"; // 群类型：Private,Public,ChatRoom,AVChatRoom
-    groupInfo.setAddOpt = NO; // 是否设置入群选项，Private类型群组请设置为false
+    groupInfo.groupType = @"Public"; // 群类型：Private,Public,ChatRoom,AVChatRoom
+    groupInfo.setAddOpt = YES; // 是否设置入群选项，Private类型群组请设置为false
     groupInfo.addOpt = TIM_GROUP_ADD_ANY; // 入群选项,TIM_GROUP_ADD_FORBID(禁止加群),TIM_GROUP_ADD_AUTH(需要管理员审批),TIM_GROUP_ADD_ANY(任何人可以加入)
     groupInfo.maxMemberNum = 0; // 最大成员数，填 0 则系统使用默认值
     groupInfo.notification = @"这是群公告"; // 群公告
@@ -366,6 +433,13 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     // 关系链参数
     //  @property(nonatomic,strong) TIMFriendProfileOption * friendProfileOpt;
 
+     TIMManager * manager = [TIMManager sharedInstance];
+
+    
+    
+    if([manager setUserConfig:userConfig] == 0) {
+        [self appendInfoText:@"设置用户参数成功"];
+    }
 }
 
 // step 4 : 登录
@@ -470,7 +544,8 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 
 #pragma TIMGroupEventListener 群事件通知回调
 - (void)onGroupTipsEvent:(TIMGroupTipsElem *)elem {
-    [self appendInfoText:@"收到了群tips回调，参数为群tips消息(TIMGroupTipsElem*)elem"];
+//    [self appendInfoText:@"收到了群tips回调，参数为群tips消息(TIMGroupTipsElem*)elem"];
+    [self appendInfoText:[NSString stringWithFormat:@"收到了群事件通知回调(tip)，类型是:%ld", (long)elem.type]];
 }
 
 #pragma TIMFriendshipListener 好友代理事件回调
