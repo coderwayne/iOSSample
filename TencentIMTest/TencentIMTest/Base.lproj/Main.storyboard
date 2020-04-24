@@ -246,6 +246,14 @@
                                     <action selector="createDIYGroupAuth:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2D6-E3-WMw"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LDh-mI-Nsl">
+                                <rect key="frame" x="353" y="498" width="138" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="拉取群未决相关信息"/>
+                                <connections>
+                                    <action selector="getPendencyFromServer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9lJ-mC-7gD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

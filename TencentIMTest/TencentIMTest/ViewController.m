@@ -95,6 +95,54 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }
 }
 
+// 获取群组未决列表
+- (IBAction)getPendencyFromServer:(id)sender {
+    TIMGroupPendencyOption *option = [[TIMGroupPendencyOption alloc] init];
+    option.timestamp = 0; //拉取的起始时间 0：拉取最新的
+    option.numPerPage = 10; //每页的数量，最大值为 10，设置超过 10，也最多只能拉回 10 条
+    
+    [[TIMGroupManager sharedInstance] getPendencyFromServer:option succ:^(TIMGroupPendencyMeta *meta, NSArray<TIMGroupPendencyItem *> *pendencies) {
+        [self appendInfoText:@"获取群组未决列表成功"];
+        [self appendInfoText:[NSString stringWithFormat:@"下一次拉取的起始时间戳:%llu, 已读时间戳大小:%llu, 未决未读数:%d", meta.nextStartTime, meta.readTimeSeq, meta.unReadCnt]];
+        
+        int i = 0;
+        for (TIMGroupPendencyItem *pendencyItem in pendencies) {
+            i++;
+            [self appendInfoText:[NSString stringWithFormat:@"第%d条未决申请：", i]];
+            [self appendInfoText:[NSString stringWithFormat:@"相关群组id：%@", pendencyItem.groupId]];
+            [self appendInfoText:[NSString stringWithFormat:@"请求者id(请求加群:请求者，邀请加群:邀请人)：%@", pendencyItem.fromUser]];
+            [self appendInfoText:[NSString stringWithFormat:@"判决者id(请求加群:0，邀请加群:被邀请人)：%@", pendencyItem.toUser]];
+            [self appendInfoText:[NSString stringWithFormat:@"未决添加时间：%llu", pendencyItem.addTime]];
+            // TIM_GROUP_PENDENCY_GET_TYPE_JOIN(申请入群), TIM_GROUP_PENDENCY_GET_TYPE_INVITE(邀请入群)
+            [self appendInfoText:[NSString stringWithFormat:@"未决请求类型：%ld", (long)pendencyItem.getType]];
+            // TIM_GROUP_PENDENCY_HANDLE_STATUS_UNHANDLED(未处理)
+            // TIM_GROUP_PENDENCY_HANDLE_STATUS_OTHER_HANDLED(被他人处理)
+            // TIM_GROUP_PENDENCY_HANDLE_STATUS_OPERATOR_HANDLED(被用户处理)
+            [self appendInfoText:[NSString stringWithFormat:@"已决标志：%ld", pendencyItem.handleStatus]];
+            // TIM_GROUP_PENDENCY_HANDLE_RESULT_REFUSE(拒绝申请)，TIM_GROUP_PENDENCY_HANDLE_RESULT_AGREE(同意申请)
+            [self appendInfoText:[NSString stringWithFormat:@"已决结果：%ld", pendencyItem.handleResult]];
+            [self appendInfoText:[NSString stringWithFormat:@"申请或邀请附加信息：%@", pendencyItem.requestMsg]];
+            [self appendInfoText:[NSString stringWithFormat:@"审批信息：同意或拒绝信息：%@", pendencyItem.handledMsg]];
+            [self appendInfoText:[NSString stringWithFormat:@"用户自己的id：%@", pendencyItem.selfIdentifier]];
+
+//            *  @param msg      同意理由，选填
+//            *  @param succ     成功回调
+//            *  @param fail     失败回调，返回错误码和错误描述
+            [pendencyItem accept:@"这是同意理由" succ:^{
+                [self appendInfoText:@"操作审核通过成功"];
+            } fail:^(int code, NSString *msg) {
+                [self appendInfoText:[NSString stringWithFormat:@"操作审核通过失败 code=%d err=%@", code, msg]];
+            }];
+
+        }
+        
+        
+        
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取群组未决列表失败 code=%d err=%@", code, msg]];
+    }];
+}
+
 // 设置某人禁言
 - (IBAction)modifyUserShutup:(id)sender {
     [[TIMGroupManager sharedInstance] modifyGroupMemberInfoSetSilence:_txtGroupId.text user:@"hxw" stime:30 succ:^{
