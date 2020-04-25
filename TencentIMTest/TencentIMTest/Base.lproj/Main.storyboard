@@ -254,6 +254,22 @@
                                     <action selector="getPendencyFromServer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9lJ-mC-7gD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHy-vU-U4V">
+                                <rect key="frame" x="527" y="498" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="邀请某人入群"/>
+                                <connections>
+                                    <action selector="inviteUserToGroup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fQj-iz-kCx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="boX-GQ-J5Z">
+                                <rect key="frame" x="223" y="552" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="修改用户角色"/>
+                                <connections>
+                                    <action selector="changeUserRole:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6s9-ml-2jZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

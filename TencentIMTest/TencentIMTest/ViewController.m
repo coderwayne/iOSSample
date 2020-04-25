@@ -48,9 +48,18 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
                 case TIM_GROUP_SYSTEM_ADD_GROUP_REQUEST_TYPE:
                     [self appendInfoText:[NSString stringWithFormat:@"有人申请加群，申请人是:%@，群组ID:%@，申请理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
                     break;
-//                case TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE:
-//                    NSLog(@"group %@ deleted by %@", [system_elem group], [system_elem user]);
-//                    break;
+                case TIM_GROUP_SYSTEM_ADD_GROUP_ACCEPT_TYPE:
+                    //触发时机：当管理员同意加群请求时，申请人会收到同意入群的消息
+                    [self appendInfoText:[NSString stringWithFormat:@"你的申请加群通过了，审核管理员是:%@，群组ID:%@，同意的理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                    break;
+                case TIM_GROUP_SYSTEM_ADD_GROUP_REFUSE_TYPE:
+                    //触发时机：当管理员拒绝加群请求时，申请人会收到拒绝入群的消息
+                    [self appendInfoText:[NSString stringWithFormat:@"你的申请加群被拒绝了，审核管理员是:%@，群组ID:%@，拒绝的理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                    break;
+                case TIM_GROUP_SYSTEM_INVITE_TO_GROUP_REQUEST_TYPE:
+                    //触发时机：当有用户被邀请群时，该用户会收到邀请入群消息，可展示给用户，由用户决定是否同意入群，如果同意，调用 accept 方法，拒绝调用 refuse 方法。
+                    [self appendInfoText:[NSString stringWithFormat:@"你的申请加群被拒绝了，审核管理员是:%@，群组ID:%@，拒绝的理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                    break;
                 default:
                     NSLog(@"ignore type");
                     break;
@@ -95,6 +104,33 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }
 }
 
+// 邀请入群消息
+- (IBAction)inviteUserToGroup:(id)sender {
+//    即时通信IM 公开群创建成功后，群主邀请人入群报错10007
+//
+//    Public群默认配置是：除了App管理员，其他人都能邀请加人，但是这个配置是可以通过修改群组形态修改。
+    
+    
+    // 触发时机：当有用户被邀请群时，该用户会收到邀请入群消息，可展示给用户，由用户决定是否同意入群，如果同意，调用 accept 方法，拒绝调用 refuse 方法。
+    [[TIMGroupManager sharedInstance] inviteGroupMember:_txtGroupId.text members:[NSArray arrayWithObjects:@"hxw", @"wdl", nil] succ:^(NSArray *members) {
+        for (TIMGroupMemberResult * result in members) {
+            [self appendInfoText:[NSString stringWithFormat:@"邀请用户入群成功 user %@ status %ld", result.member, (long)result.status]];
+        }
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"邀请用户入群失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 修改用户角色
+- (IBAction)changeUserRole:(id)sender {
+//    - (int)modifyGroupMemberInfoSetRole:(NSString*)group user:(NSString*)identifier role:(TIMGroupMemberRole)role succ:(TIMSucc)succ fail:(TIMFail)fail;
+    [[TIMGroupManager sharedInstance] modifyGroupMemberInfoSetRole:_txtGroupId.text user:@"rose" role:TIM_GROUP_MEMBER_ROLE_ADMIN succ:^{
+        [self appendInfoText:@"修改用户角色成功，rose现在是管理员"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"修改用户角色失败 code=%d err=%@", code, msg]];
+    }];
+}
+
 // 获取群组未决列表
 - (IBAction)getPendencyFromServer:(id)sender {
     TIMGroupPendencyOption *option = [[TIMGroupPendencyOption alloc] init];
@@ -125,19 +161,19 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
             [self appendInfoText:[NSString stringWithFormat:@"审批信息：同意或拒绝信息：%@", pendencyItem.handledMsg]];
             [self appendInfoText:[NSString stringWithFormat:@"用户自己的id：%@", pendencyItem.selfIdentifier]];
 
-//            *  @param msg      同意理由，选填
-//            *  @param succ     成功回调
-//            *  @param fail     失败回调，返回错误码和错误描述
             [pendencyItem accept:@"这是同意理由" succ:^{
                 [self appendInfoText:@"操作审核通过成功"];
             } fail:^(int code, NSString *msg) {
                 [self appendInfoText:[NSString stringWithFormat:@"操作审核通过失败 code=%d err=%@", code, msg]];
             }];
+            
+//            [pendencyItem refuse:@"这是拒绝理由" succ:^{
+//                [self appendInfoText:@"操作审核拒绝成功"];
+//            } fail:^(int code, NSString *msg) {
+//                [self appendInfoText:[NSString stringWithFormat:@"操作审核拒绝失败 code=%d err=%@", code, msg]];
+//            }];
 
         }
-        
-        
-        
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"获取群组未决列表失败 code=%d err=%@", code, msg]];
     }];
@@ -289,9 +325,9 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     TIMManager * manager = [TIMManager sharedInstance];
     
     [[TIMGroupManager sharedInstance] joinGroup:_txtGroupId.text msg:manager.getLoginUser succ:^(){
-        [self appendInfoText:@"加入群聊成功"];
+        [self appendInfoText:@"申请加群/加入群聊 成功"];
     }fail:^(int code, NSString * err) {
-        [self appendInfoText:[NSString stringWithFormat:@"加入群聊失败：：%d->%@", code, err]];
+        [self appendInfoText:[NSString stringWithFormat:@"申请加群/加入群聊 失败：：%d->%@", code, err]];
     }];
 }
 
