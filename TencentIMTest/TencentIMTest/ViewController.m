@@ -56,9 +56,29 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
                     //触发时机：当管理员拒绝加群请求时，申请人会收到拒绝入群的消息
                     [self appendInfoText:[NSString stringWithFormat:@"你的申请加群被拒绝了，审核管理员是:%@，群组ID:%@，拒绝的理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
                     break;
-                case TIM_GROUP_SYSTEM_INVITE_TO_GROUP_REQUEST_TYPE:
-                    //触发时机：当有用户被邀请群时，该用户会收到邀请入群消息，可展示给用户，由用户决定是否同意入群，如果同意，调用 accept 方法，拒绝调用 refuse 方法。
-                    [self appendInfoText:[NSString stringWithFormat:@"你的申请加群被拒绝了，审核管理员是:%@，群组ID:%@，拒绝的理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                case TIM_GROUP_SYSTEM_KICK_OFF_FROM_GROUP_TYPE:
+                    // 这里所谓的“踢出”，实际执行的是删除用户(deleteGroupMemberWithReason)
+                    [self appendInfoText:[NSString stringWithFormat:@"你被踢出了群组，操作的管理员是:%@，群组ID:%@", groupSystemElem.user, groupSystemElem.group]];
+                    break;
+                case TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE:
+                    // 群被解散
+                    [self appendInfoText:[NSString stringWithFormat:@"群被解散了，操作的管理员是:%@，群组ID:%@", groupSystemElem.user, groupSystemElem.group]];
+                    break;
+                case TIM_GROUP_SYSTEM_QUIT_GROUP_TYPE:
+                    // 主动退群
+                    [self appendInfoText:[NSString stringWithFormat:@"你主动退群了，你是:%@，群组ID:%@", groupSystemElem.user, groupSystemElem.group]];
+                    break;
+                case TIM_GROUP_SYSTEM_GRANT_ADMIN_TYPE:
+                    // 被设置成了管理员
+                    [self appendInfoText:[NSString stringWithFormat:@"你被设置成管理员，操作人:%@，群组ID:%@", groupSystemElem.user, groupSystemElem.group]];
+                    break;
+                case TIM_GROUP_SYSTEM_CANCEL_ADMIN_TYPE:
+                    // 被取消了管理员
+                    [self appendInfoText:[NSString stringWithFormat:@"你被取消了管理员，操作人:%@，群组ID:%@", groupSystemElem.user, groupSystemElem.group]];
+                    break;
+                case TIM_GROUP_SYSTEM_REVOKE_GROUP_TYPE:
+                    // 当群组被系统回收时，全员可收到群组被回收消息。
+                    [self appendInfoText:[NSString stringWithFormat:@"你加入的这个群组%@被系统回收了", groupSystemElem.group]];
                     break;
                 default:
                     NSLog(@"ignore type");
@@ -104,6 +124,56 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }
 }
 
+// 获取群资料
+- (IBAction)getGroupInfo:(id)sender {
+//    @param groups 群组 ID 列表
+//    *  @param succ 成功回调，不包含 selfInfo 信息
+//    *  @param fail 失败回调
+//    *
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    [groups addObject:_txtGroupId.text];
+    
+    [[TIMGroupManager sharedInstance] getGroupInfo:groups succ:^(NSArray *groupList) {
+        int i = 0;
+        // 列表为 TIMGroupInfo，结构体只包含 group|groupName|groupType|faceUrl|allShutup|selfInfo 信息
+        for (TIMGroupInfo *groupInfo in groupList) {
+            i++;
+            [self appendInfoText:[NSString stringWithFormat:@"查询到的第%d个群组：", i]];
+            [self appendInfoText:[NSString stringWithFormat:@"群组ID：%@", groupInfo.group]];
+            [self appendInfoText:[NSString stringWithFormat:@"入群类型：%ld", (long)groupInfo.addOpt]];
+            [self appendInfoText:[NSString stringWithFormat:@"群名称：%@", groupInfo.groupName]];
+            [self appendInfoText:[NSString stringWithFormat:@"群类型：%@", groupInfo.groupType]];
+            [self appendInfoText:[NSString stringWithFormat:@"群头像：%@", groupInfo.faceURL]];
+            [self appendInfoText:[NSString stringWithFormat:@"是否全体禁言：%d", groupInfo.allShutup]];
+            // 成功回调，不包含 selfInfo 信息
+            [self appendInfoText:[NSString stringWithFormat:@"群组中的本人信息：%@", groupInfo.selfInfo]];
+        }
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取群资料失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 获取我在群里的资料
+- (IBAction)getGroupSelfInfo:(id)sender {
+    [[TIMGroupManager sharedInstance] getGroupSelfInfo:_txtGroupId.text succ:^(TIMGroupMemberInfo *selfInfo) {
+
+        [self appendInfoText:[NSString stringWithFormat:@"被操作成员：%@", selfInfo.member]];
+        [self appendInfoText:[NSString stringWithFormat:@"群名片：%@", selfInfo.nameCard]];
+        [self appendInfoText:[NSString stringWithFormat:@"加入群组时间：%ld", selfInfo.joinTime]];
+        // 0 -- TIM_GROUP_MEMBER_UNDEFINED -- 未定义(没有获取该字段)
+        // 200 -- TIM_GROUP_MEMBER_ROLE_MEMBER -- 群成员
+        // 300 -- TIM_GROUP_MEMBER_ROLE_ADMIN -- 群管理员
+        // 400 -- TIM_GROUP_MEMBER_ROLE_SUPER -- 群主
+        [self appendInfoText:[NSString stringWithFormat:@"成员类型：%ld", selfInfo.role]];
+        [self appendInfoText:[NSString stringWithFormat:@"禁言时间（剩余秒数）：%u", selfInfo.silentUntil]];
+        // 自定义字段集合,key 是 NSString*类型,value 是 NSData*类型
+        [self appendInfoText:[NSString stringWithFormat:@"自定义字段集合：%@", selfInfo.customInfo]];
+        
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"获取我在群里的资料失败 code=%d err=%@", code, msg]];
+    }];
+}
+
 // 邀请入群消息
 - (IBAction)inviteUserToGroup:(id)sender {
 //    即时通信IM 公开群创建成功后，群主邀请人入群报错10007
@@ -123,9 +193,9 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 
 // 修改用户角色
 - (IBAction)changeUserRole:(id)sender {
-//    - (int)modifyGroupMemberInfoSetRole:(NSString*)group user:(NSString*)identifier role:(TIMGroupMemberRole)role succ:(TIMSucc)succ fail:(TIMFail)fail;
-    [[TIMGroupManager sharedInstance] modifyGroupMemberInfoSetRole:_txtGroupId.text user:@"rose" role:TIM_GROUP_MEMBER_ROLE_ADMIN succ:^{
-        [self appendInfoText:@"修改用户角色成功，rose现在是管理员"];
+
+    [[TIMGroupManager sharedInstance] modifyGroupMemberInfoSetRole:_txtGroupId.text user:_txtSendUser.text role:TIM_GROUP_MEMBER_ROLE_ADMIN succ:^{
+        [self appendInfoText:[NSString stringWithFormat:@"修改用户角色成功，%@现在是管理员", self->_txtSendUser.text]];
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"修改用户角色失败 code=%d err=%@", code, msg]];
     }];
@@ -240,6 +310,9 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 // 获取我加入的群组
 - (IBAction)getMyGroup:(id)sender {
     [[TIMGroupManager sharedInstance] getGroupList:^(NSArray *groupList) {
+        if(groupList.count == 0) {
+            [self appendInfoText:@"未加入任何群组"];
+        }
         int i = 0;
         // 列表为 TIMGroupInfo，结构体只包含 group|groupName|groupType|faceUrl|allShutup|selfInfo 信息
         for (TIMGroupInfo *groupInfo in groupList) {
@@ -343,7 +416,7 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 // 删除群组成员
 - (IBAction)deleteGroupUser:(id)sender {
     NSMutableArray * members = [[NSMutableArray alloc] init];
-    [members addObject:@"hxw"];
+    [members addObject:@"jerry"];
     
     [[TIMGroupManager sharedInstance] deleteGroupMemberWithReason:_txtGroupId.text reason:@"发广告" members:members succ:^(NSArray *members) {
         for (TIMGroupMemberResult * result in members) {
