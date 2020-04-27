@@ -820,8 +820,50 @@ BOOL readFlag = NO;
 - (void)onGroupTipsEvent:(TIMGroupTipsElem *)elem {
 //    [self appendInfoText:@"收到了群tips回调，参数为群tips消息(TIMGroupTipsElem*)elem"];
     [self appendInfoText:[NSString stringWithFormat:@"收到了群事件通知回调(tip)，类型是:%ld", (long)elem.type]];
+    
     if(elem.type == TIM_GROUP_TIPS_TYPE_INFO_CHANGE) {
         [self appendInfoText:[NSString stringWithFormat:@"群资料变更了"]];
+        
+        //    /**
+        //     *  群信息变更： TIM_GROUP_TIPS_TYPE_INFO_CHANGE 时有效，为 TIMGroupTipsElemGroupInfo 结构体列表
+        //     */
+        //    @property(nonatomic,strong) NSArray<TIMGroupTipsElemGroupInfo *> * groupChangeList;
+        for (TIMGroupTipsElemGroupInfo *groupTipsElemGroupInfo in elem.groupChangeList) {
+            
+            [self appendInfoText:[NSString stringWithFormat:@"这次具体变更的类型是是:%ld", groupTipsElemGroupInfo.type]];
+            
+            if(groupTipsElemGroupInfo.type == TIM_GROUP_INFO_CHANGE_GROUP_CUSTOM) {
+                // 如果变更类型是群自定义字段,key 对应的是具体变更的字段，群自定义字段的变更只会通过 TIMUserConfig -> TIMGroupEventListener 回调给客户
+                [self appendInfoText:[NSString stringWithFormat:@"自定义字段%@变了：值是%@", groupTipsElemGroupInfo.key, groupTipsElemGroupInfo.value]];
+            }
+            
+//            typedef NS_ENUM(NSInteger, TIM_GROUP_INFO_CHANGE_TYPE){
+//                /**
+//                 *  群名修改
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_NAME                    = 0x01,
+//                /**
+//                 *  群简介修改
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_INTRODUCTION            = 0x02,
+//                /**
+//                 *  群公告修改
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_NOTIFICATION            = 0x03,
+//                /**
+//                 *  群头像修改
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_FACE                    = 0x04,
+//                /**
+//                 *  群主变更
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_OWNER                   = 0x05,
+//                /**
+//                 *  群自定义字段变更
+//                 */
+//                TIM_GROUP_INFO_CHANGE_GROUP_CUSTOM                  = 0x06,
+//            };
+        }
         
          NSMutableArray *groups = [[NSMutableArray alloc] init];
             [groups addObject:_txtGroupId.text];
