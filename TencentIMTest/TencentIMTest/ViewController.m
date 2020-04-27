@@ -124,7 +124,7 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }
 }
 
-// 获取群资料
+// 获取群组资料
 - (IBAction)getGroupInfo:(id)sender {
 //    @param groups 群组 ID 列表
 //    *  @param succ 成功回调，不包含 selfInfo 信息
@@ -147,6 +147,16 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
             [self appendInfoText:[NSString stringWithFormat:@"是否全体禁言：%d", groupInfo.allShutup]];
             // 成功回调，不包含 selfInfo 信息
             [self appendInfoText:[NSString stringWithFormat:@"群组中的本人信息：%@", groupInfo.selfInfo]];
+            
+            NSDictionary *dict = (NSDictionary *)groupInfo.customInfo;
+            
+            for(NSString *key in dict){
+                NSData *data = (NSData *)[dict objectForKey:key];
+                NSString * str  =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                [self appendInfoText:[NSString stringWithFormat:@"自定义字段key = %@,value = %@",key,str]];
+            }
+
+//            [self appendInfoText:[NSString stringWithFormat:@"key:%@,value:%@", dict[0],dict[0] NSValue];
         }
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"获取群资料失败 code=%d err=%@", code, msg]];
@@ -278,6 +288,27 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     }];
 }
 
+// 修改群自定义字段
+- (IBAction)modifyGroupCustomInfo:(id)sender {
+    
+//    @param groupId    群组Id
+//    *  @param customInfo 自定义字段集合,key 是 NSString* 类型,value 是 NSData* 类型,value 长度不超过 512 字节
+//    *  @param succ       成功回调
+//    *  @param fail       失败回调
+    NSMutableDictionary *customInfo = [[NSMutableDictionary alloc] init];
+    NSString *key = @"curLiveUrl";
+    NSDate *datenow = [NSDate date];
+    NSString *timeStamp = [NSString stringWithFormat:@"新修改的值：%ld", (long)([datenow timeIntervalSince1970]*1000)];
+    NSData *data = [timeStamp dataUsingEncoding:NSUTF8StringEncoding];
+    [customInfo setObject:data forKey:key];
+    
+    [[TIMGroupManager sharedInstance] modifyGroupCustomInfo:_txtGroupId.text customInfo:customInfo succ:^{
+        [self appendInfoText:@"修改群自定义字段成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"修改群自定义字段失败 code=%d err=%@", code, msg]];
+    }];
+}
+
 // 解散群组
 - (IBAction)deleteGroup:(id)sender {
     [[TIMGroupManager sharedInstance] deleteGroup:_txtGroupId.text succ:^{
@@ -301,6 +332,27 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     
     TIMConversation *group_conversation = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:_txtGroupId.text];
     [group_conversation sendMessage:msg succ:^{
+        [self appendInfoText:@"消息发送成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
+    }];
+}
+
+// 发送在线消息
+- (IBAction)sendOnlineMessage:(id)sender {
+    NSString *bodyString =  @"{\"name\": \"John Doe\", \"age\": 18, \"address\": {\"country\" : \"china\", \"zip-code\": \"10000\"}}";
+    NSDictionary *dic = @{@"msg_id":@"1001", @"stamp":@"200420180112", @"body":bodyString};
+
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:kNilOptions error:nil];
+    
+    TIMCustomElem *customElem = [[TIMCustomElem alloc] init];
+    customElem.data = jsonData;
+
+    TIMMessage *msg = [[TIMMessage alloc] init];
+    [msg addElem:customElem];
+    
+    TIMConversation *group_conversation = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:_txtGroupId.text];
+    [group_conversation sendOnlineMessage:msg succ:^{
         [self appendInfoText:@"消息发送成功"];
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
@@ -460,7 +512,14 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     groupInfo.notification = @"这是群公告"; // 群公告
     groupInfo.introduction = @"这是群简介"; // 群简介
     groupInfo.faceURL = @"https://www.ofweek.com/Upload/seminar/2020-4/202041014384346.jpg"; // 群头像
-//    groupInfo.customInfo = [[NSDictionary alloc] initWithObjects:nil forKeys:nil]; // 自定义字段集合,key 是 NSString* 类型，value 是 NSData* 类型
+    
+    
+    NSMutableDictionary *customInfo = [[NSMutableDictionary alloc] init];
+    NSString *key = @"curLiveUrl";
+    NSData *data = [@"hxw23" dataUsingEncoding:NSUTF8StringEncoding];
+    [customInfo setObject:data forKey:key];
+    
+    groupInfo.customInfo = customInfo; // 自定义字段集合,key 是 NSString* 类型，value 是 NSData* 类型
 //    groupInfo.membersInfo = [NSArray arrayWithObject:nil]; // 创建成员（TIMCreateGroupMemberInfo*）列表
     
 
@@ -680,8 +739,66 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     [self appendInfoText:@"刷新会话"];
 }
 
+BOOL readFlag = NO;
+
 - (void)onRefreshConversations:(NSArray<TIMConversation *> *)conversations {
     [self appendInfoText:@"刷新部分会话，参数为会话（TIMConversation*）列表"];
+    
+    int i = 0;
+    for (TIMConversation *conversation in conversations) {
+        i++;
+        [self appendInfoText:[NSString stringWithFormat:@"第%d个会话：", i]];
+        [self appendInfoText:[NSString stringWithFormat:@"会话类型：%ld", (long)[conversation getType]]];
+        [self appendInfoText:[NSString stringWithFormat:@"会话人/群组：%@", [conversation getReceiver]]];
+        [self appendInfoText:[NSString stringWithFormat:@"群名称：%@", [conversation getGroupName]]];
+        
+        [self appendInfoText:[NSString stringWithFormat:@"未读消息数：%ld", (long)[conversation getUnReadMessageNum]]];
+        
+        
+//        *  @param count 获取数量
+//        *  @param last  上次最后一条消息，如果 last 为 nil，从最新的消息开始读取
+//        *  @param succ  成功时回调
+//        *  @param fail  失败时回调
+//        *
+//        *  @return 0：本次操作成功；1：本次操作失败
+        
+       [conversation getMessage:10 last:nil succ:^(NSArray *msgs) {
+          for (TIMMessage *msg in msgs) {
+              TIMElem *elem = [msg getElem:0];
+              [self appendInfoText:[NSString stringWithFormat:@"消息的类型是：%@", [elem class]]];
+
+              if([elem isKindOfClass:[TIMTextElem class]]) {
+                  TIMTextElem *textElem = (TIMTextElem *)elem;
+                  [self appendInfoText:[NSString stringWithFormat:@"收到文本消息: %@", textElem.text]];
+              }
+              
+                            
+              //               *  3.1 标记消息为已读状态
+              //              *  @note 该接口尚不支持标记单独一条消息，只能标记一批。即标记当前一条消息，之前的消息也会全被标记为已读状态。
+              //              *
+              //              *  @param fromMsg 会话内最近一条已读的消息，nil 表示上报最新消息
+              //              *  @param succ  成功时回调
+              //              *  @param fail  失败时回调
+              //              *
+              //              *  @return 0 表示成功
+                            if(!readFlag) {
+                                [conversation setReadMessage:msg succ:^{
+                                    [self appendInfoText:@"标记已读成功"];
+                                } fail:^(int code, NSString *msg) {
+                                    [self appendInfoText:[NSString stringWithFormat:@"标记已读失败: code=%d, err=%@", code, msg]];
+                                }];
+                                
+                                readFlag = YES;
+                            }
+          }
+
+          } fail:^(int code, NSString *msg) {
+              [self appendInfoText:[NSString stringWithFormat:@"从服务端拉取历史消息失败: code=%d, err=%@", code, msg]];
+          }];
+        
+
+    }
+    
 }
 
 #pragma TIMMessageReceiptListener 收到了已读回执
@@ -703,6 +820,41 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 - (void)onGroupTipsEvent:(TIMGroupTipsElem *)elem {
 //    [self appendInfoText:@"收到了群tips回调，参数为群tips消息(TIMGroupTipsElem*)elem"];
     [self appendInfoText:[NSString stringWithFormat:@"收到了群事件通知回调(tip)，类型是:%ld", (long)elem.type]];
+    if(elem.type == TIM_GROUP_TIPS_TYPE_INFO_CHANGE) {
+        [self appendInfoText:[NSString stringWithFormat:@"群资料变更了"]];
+        
+         NSMutableArray *groups = [[NSMutableArray alloc] init];
+            [groups addObject:_txtGroupId.text];
+            
+            [[TIMGroupManager sharedInstance] getGroupInfo:groups succ:^(NSArray *groupList) {
+                int i = 0;
+                // 列表为 TIMGroupInfo，结构体只包含 group|groupName|groupType|faceUrl|allShutup|selfInfo 信息
+                for (TIMGroupInfo *groupInfo in groupList) {
+                    i++;
+                    [self appendInfoText:[NSString stringWithFormat:@"查询到的第%d个群组：", i]];
+                    [self appendInfoText:[NSString stringWithFormat:@"群组ID：%@", groupInfo.group]];
+                    [self appendInfoText:[NSString stringWithFormat:@"入群类型：%ld", (long)groupInfo.addOpt]];
+                    [self appendInfoText:[NSString stringWithFormat:@"群名称：%@", groupInfo.groupName]];
+                    [self appendInfoText:[NSString stringWithFormat:@"群类型：%@", groupInfo.groupType]];
+                    [self appendInfoText:[NSString stringWithFormat:@"群头像：%@", groupInfo.faceURL]];
+                    [self appendInfoText:[NSString stringWithFormat:@"是否全体禁言：%d", groupInfo.allShutup]];
+                    // 成功回调，不包含 selfInfo 信息
+                    [self appendInfoText:[NSString stringWithFormat:@"群组中的本人信息：%@", groupInfo.selfInfo]];
+                    
+                    NSDictionary *dict = (NSDictionary *)groupInfo.customInfo;
+                    
+                    for(NSString *key in dict){
+                        NSData *data = (NSData *)[dict objectForKey:key];
+                        NSString * str  =[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                        [self appendInfoText:[NSString stringWithFormat:@"自定义字段key = %@,value = %@",key,str]];
+                    }
+
+        //            [self appendInfoText:[NSString stringWithFormat:@"key:%@,value:%@", dict[0],dict[0] NSValue];
+                }
+            } fail:^(int code, NSString *msg) {
+                [self appendInfoText:[NSString stringWithFormat:@"获取群资料失败 code=%d err=%@", code, msg]];
+            }];
+    }
 }
 
 #pragma TIMFriendshipListener 好友代理事件回调
