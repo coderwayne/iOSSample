@@ -302,6 +302,14 @@
                                     <action selector="modifyGroupCustomInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nwx-Oc-Ecg"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erf-JN-bfB">
+                                <rect key="frame" x="642" y="552" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="修改群名称"/>
+                                <connections>
+                                    <action selector="modifyGroupName:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sgN-az-B31"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

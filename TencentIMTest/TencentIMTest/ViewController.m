@@ -47,6 +47,8 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
             switch (groupSystemElem.type) {
                 case TIM_GROUP_SYSTEM_ADD_GROUP_REQUEST_TYPE:
                     [self appendInfoText:[NSString stringWithFormat:@"有人申请加群，申请人是:%@，群组ID:%@，申请理由:%@", groupSystemElem.user, groupSystemElem.group, groupSystemElem.msg]];
+                    
+                    // do accept/ do refuse
                     break;
                 case TIM_GROUP_SYSTEM_ADD_GROUP_ACCEPT_TYPE:
                     //触发时机：当管理员同意加群请求时，申请人会收到同意入群的消息
@@ -109,7 +111,7 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
                     [self appendInfoText:[NSString stringWithFormat:@"群资料变更，操作用户是:%@，群名:%@, 群变更的具体资料信息:%@", groupTipsElem.opUser, groupTipsElem.groupName, groupTipsElem.groupChangeList]];
                     break;
                 default:
-                    NSLog(@"ignore type");
+                     [self appendInfoText:@"ignore type"];
                     break;
             }
         }
@@ -122,6 +124,21 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
         }
         
     }
+}
+- (IBAction)modifyGroupName:(id)sender {
+//    *  @param groupId   群组Id
+//    *  @param groupName 新群名
+//    *  @param succ      成功回调
+//    *  @param fail      失败回调
+    
+    NSDate *datenow = [NSDate date];
+    NSString *timeStamp = [NSString stringWithFormat:@"新的群名：%ld", (long)([datenow timeIntervalSince1970]*1000)];
+    
+    [[TIMGroupManager sharedInstance] modifyGroupName:_txtGroupId.text groupName:timeStamp succ:^{
+        [self appendInfoText:@"修改群名称成功"];
+    } fail:^(int code, NSString *msg) {
+        [self appendInfoText:[NSString stringWithFormat:@"修改群名称失败 code=%d err=%@", code, msg]];
+    }];
 }
 
 // 获取群组资料
@@ -440,6 +457,7 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
     TIMConversation *group_conversation = [[TIMManager sharedInstance] getConversation:TIM_GROUP receiver:_txtGroupId.text];
     [group_conversation sendMessage:msg succ:^{
         [self appendInfoText:@"消息发送成功"];
+        //显示在自己的聊天界面
     } fail:^(int code, NSString *msg) {
         [self appendInfoText:[NSString stringWithFormat:@"消息发送失败 code=%d err=%@", code, msg]];
     }];
@@ -742,10 +760,11 @@ TIMUploadProgressListener, TIMGroupEventListener, TIMFriendshipListener, TIMMess
 BOOL readFlag = NO;
 
 - (void)onRefreshConversations:(NSArray<TIMConversation *> *)conversations {
-    [self appendInfoText:@"刷新部分会话，参数为会话（TIMConversation*）列表"];
-    
+ 
+    return;
     int i = 0;
     for (TIMConversation *conversation in conversations) {
+        [self appendInfoText:@"刷新部分会话，参数为会话（TIMConversation*）列表"];
         i++;
         [self appendInfoText:[NSString stringWithFormat:@"第%d个会话：", i]];
         [self appendInfoText:[NSString stringWithFormat:@"会话类型：%ld", (long)[conversation getType]]];
